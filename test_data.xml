@@ -1,9 +1,8 @@
 <blurb>
     <pattern>
-        <entry>
-            <embed category="abstraction" filter="Ucfirst"/> is the root of <embed category="abstraction"/>.
-        </entry>
-        <entry weight="20">There is no <embed category="abstraction"/>, only <embed category="abstraction"/>.</entry>
+        <entry><embed category="abstraction" filter="Ucfirst"/> is the root of <embed
+                category="abstraction"/>.</entry>
+        <entry weight="20">A funny word is "<embed category="funnyword" filter="ucfirst"/>".</entry>
     </pattern>
     <namespace name="main">
         <category name="abstraction">
@@ -12,6 +11,9 @@
             <entry>happiness</entry>
             <entry>faith</entry>
             <entry>despair</entry>
+        </category>
+        <category name="funnyword">
+            <entry>weaselnipples</entry>
         </category>
     </namespace>
 </blurb>

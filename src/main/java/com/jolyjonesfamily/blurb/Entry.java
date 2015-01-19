@@ -81,7 +81,8 @@ public class Entry {
     protected String filter(String original, String filterName)
     {
         try {
-            Class filterClass = Class.forName(FILTER_NAMESPACE + filterName);
+            String inFilter = Character.toUpperCase(filterName.charAt(0)) + filterName.substring(1);
+            Class filterClass = Class.forName(FILTER_NAMESPACE + inFilter);
             Constructor emptyConstructor = filterClass.getConstructors()[0];
             Filter filterType = (Filter) emptyConstructor.newInstance();
             return filterType.filter(original);

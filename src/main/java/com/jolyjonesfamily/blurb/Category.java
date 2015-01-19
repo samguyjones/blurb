@@ -41,6 +41,8 @@ public class Category {
      */
     private static Selector generator;
 
+    private static final String CATEGORY_XPATH = "/blurb/namespace[@name='%s']/category[@name='%s']";
+
     static
     {
         categories = new HashMap<String, Map<String, Category>>();
@@ -62,11 +64,20 @@ public class Category {
      *
      * @param numberGen to handle generating random numbers.
      */
-    @Inject
-    public Category(Selector numberGen)
+    @Inject public Category(Selector numberGen)
     {
         generator = numberGen;
         maxWeightedValue = 0;
+    }
+
+    /**
+     * Return output for this category.
+     *
+     * @return Output based on random data and the xml data.
+     */
+    public String getOutput()
+    {
+        return chooseEntry().getOutput();
     }
 
     /**
@@ -130,8 +141,13 @@ public class Category {
             categories.put(namespace, new HashMap<String, Category>());
         }
         if (!categories.get(namespace).containsKey(categoryName)) {
-            categories.get(namespace).put(categoryName,
-                    fetchCategory(categoryName, namespace));
+            try {
+                categories.get(namespace).put(categoryName,
+                        fetchCategory(categoryName, namespace));
+            } catch (IllegalArgumentException iae) {
+                iae.printStackTrace();
+                System.exit(1);
+            }
         }
         return categories.get(namespace).get(categoryName);
     }
@@ -144,21 +160,17 @@ public class Category {
      * @return Newly instantiated category object fetched from the DOM.
      * @throws XPathExpressionException
      */
-    private static Category fetchCategory(String categoryName, String namespace) {
+    private static Category fetchCategory(String categoryName, String namespace) throws IllegalArgumentException {
         XPath xseek = XPathFactory.newInstance().newXPath();
         try {
-            String testOut = baseElement.getTextContent();
-            NodeList results = (NodeList) xseek.evaluate(
-                "/blurb/namespace/category",
-                    baseElement, XPathConstants.NODESET);
+            String myPath = String.format(CATEGORY_XPATH, namespace, categoryName);
+            NodeList results = (NodeList) xseek.evaluate(myPath, baseElement, XPathConstants.NODESET);
             if (results.getLength() > 1) {
-                System.out.println("Too many results for namespace %s category %s"
-                        .format(namespace, categoryName));
-                System.exit(1);
+                throw new IllegalArgumentException(String.format("Too many results for namespace %s category %s",
+                        namespace, categoryName));
             } else if (results.getLength() == 0) {
-                System.out.println("No match for namespace %s category %s"
-                        .format(namespace, categoryName));
-                System.exit(1);
+                throw new IllegalArgumentException(String.format("No match for namespace %s category %s",
+                        namespace, categoryName));
             }
             return new Category(results.item(0), generator);
         } catch (XPathExpressionException e) {

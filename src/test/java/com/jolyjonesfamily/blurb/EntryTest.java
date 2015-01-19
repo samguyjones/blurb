@@ -14,16 +14,9 @@ import java.io.File;
 /**
  * Created by samjones on 1/12/15.
  */
-public class EntryTest {
-    private static final String TEST_XML_FILENAME = "test_data.xml";
-    private Node baseNode;
-    public EntryTest()
-    {
-        Runner setupRunner = new Runner(TEST_XML_FILENAME);
-        baseNode = setupRunner.getPattern();
-    }
+public class EntryTest extends BlurbTest {
 
-    @Test public void constructorTest()
+    @Test public void constructor()
     {
         NodeList topElements = baseNode.getChildNodes();
         Element secondElement = (Element) topElements.item(3);
@@ -31,5 +24,14 @@ public class EntryTest {
         Entry testEntry = new Entry(secondElement, weight);
         Assert.assertEquals(secondElement, testEntry.element);
         Assert.assertEquals(20, testEntry.weight);
+    }
+
+    @Test public void output()
+    {
+        NodeList topElements = baseNode.getChildNodes();
+        Element secondElement = (Element) topElements.item(3);
+        int weight = Integer.parseInt(secondElement.getAttribute("weight"));
+        Entry testEntry = new Entry(secondElement, weight);
+        Assert.assertEquals("A funny word is \"Weaselnipples\".",testEntry.getOutput());
     }
 }
