@@ -7,6 +7,7 @@ import com.google.inject.Module;
 import com.google.inject.name.Named;
 import com.jolyjonesfamily.blurb.guice.LiveBlurbModule;
 import com.jolyjonesfamily.blurb.selector.RandomSelector;
+import org.apache.commons.cli.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
@@ -16,6 +17,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.jolyjonesfamily.blurb.selector.Selector;
 
 /**
@@ -23,12 +27,62 @@ import com.jolyjonesfamily.blurb.selector.Selector;
  */
 public class Runner {
     private Category baseCategory;
-
     private Node pattern;
+    private static final char PARAM = 'p';
+    private static final String PARAM_NAME = "parameters";
 
     public static void main (String argv[]) {
-        Runner myRunner = new Runner(argv[0]);
-        System.out.println(myRunner.getOutput());
+        Runner myRunner = parseOptions(argv);
+        if (myRunner != null) {
+            System.out.println(myRunner.getOutput());
+        }
+    }
+
+    public Category getBaseCategory() {
+        return baseCategory;
+    }
+
+    private static Options getOptions()
+    {
+        Options options = new Options();
+        options.addOption(OptionBuilder.withArgName(PARAM_NAME)
+            .hasArgs()
+            .withValueSeparator('&')
+            .withDescription("A set of key value pairs of options represented by key=value")
+            .create(PARAM));
+        return options;
+    }
+
+    private static Runner parseOptions(String argv[])
+    {
+        Parser cliParser = new BasicParser();
+        CommandLine cmd = null;
+        try {
+            cmd = cliParser.parse(getOptions(), argv);
+        } catch (ParseException pe) {
+            System.err.println("Error parsing command line.");
+        }
+        if (cmd.getArgs().length < 1) {
+            HelpFormatter formatter = new HelpFormatter();
+            formatter.printHelp("blurb XML_CONFIG", getOptions());
+            return null;
+        }
+        return getInstance(cmd);
+    }
+
+    private static Runner getInstance(CommandLine cmd)
+    {
+        Runner myRunner = new Runner(cmd.getArgs()[0]);
+        if (cmd.hasOption(PARAM)) {
+            Map<String, String> parameters = new HashMap<String, String>();
+            String[] results = cmd.getOptionValues(PARAM);
+            for(String myResult : results) {
+                String[] twoParts = myResult.split("=");
+                parameters.put(twoParts[0],twoParts[1]);
+            }
+            myRunner.baseCategory.setParams(parameters);
+        }
+        return myRunner;
     }
 
     @Inject

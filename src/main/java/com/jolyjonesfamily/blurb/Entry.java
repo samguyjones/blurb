@@ -1,12 +1,12 @@
 package com.jolyjonesfamily.blurb;
 
 import com.jolyjonesfamily.blurb.filter.Filter;
-import com.sun.xml.internal.ws.util.StringUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.lang.reflect.Constructor;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -16,6 +16,11 @@ public class Entry {
     public int weight;
     public Element element;
     private static final String FILTER_NAMESPACE = "com.jolyjonesfamily.blurb.filter.";
+    private static final String DEFAULT_ECHO = "UNDEFINED";
+    private static final String PARAMETER_TYPE = "param";
+    private static final String PARAM_KEY_FIELD = "name";
+    private static final String PARAM_VALUE_FIELD = "value";
+    private Category parentCategory;
     // public Entry entry;
 
     /**
@@ -24,10 +29,11 @@ public class Entry {
      * @param element
      * @param weight
      */
-    public Entry(Element element, int weight)
+    public Entry(Category category, Element element, int weight)
     {
         this.element = element;
         this.weight = weight;
+        parentCategory = category;
     }
 
     /**
@@ -44,14 +50,24 @@ public class Entry {
                 output += showText(myNode.getTextContent());
             } else if (myNode.getNodeName().equals("embed")) {
                 Element embed = (Element) myNode;
-                String embedOut = getEmbedCategory(embed).chooseEntry().getOutput();
+                String embedOut = getPopulatedEmbed(embed).chooseEntry().getOutput();
                 if (embed.hasAttribute("filter")) {
                     embedOut = filter(embedOut, embed.getAttribute("filter"));
                 }
                 output += embedOut;
+            } else if (myNode.getNodeName().equals("echo")) {
+                Element echo = (Element) myNode;
+                String echoed = (getParam(echo.getAttribute("param")) == null) ?
+                    DEFAULT_ECHO : getParam(echo.getAttribute("param"));
+                output += echoed;
             }
         }
         return output;
+    }
+
+    private String getParam(String key)
+    {
+        return parentCategory.getParam(key);
     }
 
     /**
@@ -60,7 +76,7 @@ public class Entry {
      * @param embed
      * @return
      */
-    protected Category getEmbedCategory(Element embed)
+    protected  Category getCategory(Element embed)
     {
         if (embed.hasAttribute("namespace")) {
             return Category.getCategory(embed.getAttribute("namespace"),
@@ -68,7 +84,29 @@ public class Entry {
         } else {
             return Category.getCategory(embed.getAttribute("category"));
         }
+    }
 
+    /**
+     * Return the category of specified element with added parameters.
+     *
+     * @param embed
+     * @return
+     */
+    protected Category getPopulatedEmbed(Element embed)
+    {
+        Category embedCategory = getCategory(embed);
+        NodeList paramList = embed.getElementsByTagName(PARAMETER_TYPE);
+        if (paramList.getLength() == 0) {
+            embedCategory.setParams(null);
+            return embedCategory;
+        }
+        Map<String, String> params = new HashMap<String,String>();
+        for (int count = 0; count < paramList.getLength(); count++){
+            Element myParam = (Element) paramList.item(count);
+            params.put(myParam.getAttribute(PARAM_KEY_FIELD),
+                myParam.getAttribute(PARAM_VALUE_FIELD));
+        }
+        return embedCategory;
     }
 
     /**

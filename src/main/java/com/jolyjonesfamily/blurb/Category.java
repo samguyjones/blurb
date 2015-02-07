@@ -27,6 +27,16 @@ public class Category {
     protected List<Entry> entries;
 
     /**
+     * Default parameters as specified in the XML.
+     */
+    private Map<String, String> defaultParams;
+
+    /**
+     * Parameters as passed from runner or from embed code.
+     */
+    private Map<String, String> params;
+
+    /**
      * Map with namespaces as keys and category names as categories
      */
     protected static Map<String,Map<String, Category>> categories;
@@ -92,6 +102,26 @@ public class Category {
         }
     }
 
+    public Map<String, String> getParams() {
+        return params;
+    }
+
+    public void setParams(Map<String, String> params) {
+        this.params = params;
+    }
+
+    public String getParam(String key)
+    {
+        if ((params != null) && (params.containsKey(key))) {
+            return params.get(key);
+        }
+        if ((defaultParams != null) && (defaultParams.containsKey(key))) {
+            return defaultParams.get(key);
+        }
+        return null;
+    }
+
+
     /**
      * Pick an entry at random
      *
@@ -121,7 +151,7 @@ public class Category {
             if (!children.item(nodeNumber).getNodeName().equals("entry")) continue;
             Element entryElement = (Element)children.item(nodeNumber);
             int weight = entryElement.hasAttribute("weight") ? Integer.parseInt(entryElement.getAttribute("weight")) : 1;
-            Entry entry = new Entry(entryElement, weight);
+            Entry entry = new Entry(this, entryElement, weight);
             results.add(entry);
             maxWeightedValue += entry.weight;
         }

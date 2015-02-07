@@ -21,7 +21,7 @@ public class EntryTest extends BlurbTest {
         NodeList topElements = baseNode.getChildNodes();
         Element secondElement = (Element) topElements.item(3);
         int weight = Integer.parseInt(secondElement.getAttribute("weight"));
-        Entry testEntry = new Entry(secondElement, weight);
+        Entry testEntry = new Entry(setupRunner.getBaseCategory(),secondElement, weight);
         Assert.assertEquals(secondElement, testEntry.element);
         Assert.assertEquals(20, testEntry.weight);
     }
@@ -31,7 +31,7 @@ public class EntryTest extends BlurbTest {
         NodeList topElements = baseNode.getChildNodes();
         Element secondElement = (Element) topElements.item(3);
         int weight = Integer.parseInt(secondElement.getAttribute("weight"));
-        Entry testEntry = new Entry(secondElement, weight);
+        Entry testEntry = new Entry(setupRunner.getBaseCategory(),secondElement, weight);
         Assert.assertEquals("A funny word is \"Weaselnipples\".",testEntry.getOutput());
     }
 }

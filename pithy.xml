@@ -3,7 +3,7 @@
         <entry>
             <embed category="abstraction" filter="Ucfirst"/> is the root of <embed category="abstraction"/>.
         </entry>
-        <entry weight="20">There is no <embed category="abstraction"/>, only <embed category="abstraction"/>.</entry>
+        <entry weight="20">There is no <echo param="subject"/>, only <embed category="abstraction"/>.</entry>
     </pattern>
     <namespace name="main">
         <category name="abstraction">
