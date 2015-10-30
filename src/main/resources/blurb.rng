@@ -1,0 +1,125 @@
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+    <start>
+        <element name="blurb">
+            <element name="pattern">
+                <ref name="cat"/>
+            </element>
+            <element name="namespaces">
+                <zeroOrMore>
+                    <element name="namespace">
+                        <attribute name="name">
+                            <text/>
+                        </attribute>
+                        <element name="categories">
+                            <zeroOrMore>
+                                <element name="category">
+                                    <attribute name="name">
+                                        <text/>
+                                    </attribute>
+                                    <ref name="cat"/>
+                                </element>
+                            </zeroOrMore>
+                        </element>
+                    </element>
+                </zeroOrMore>
+            </element>
+        </element>
+    </start>
+
+    <define name="cat">
+        <zeroOrMore>
+            <element name="param">
+                <attribute name="name">
+                    <text/>
+                </attribute>
+                <optional>
+                    <attribute name="default">
+                        <text/>
+                    </attribute>
+                </optional>
+            </element>
+        </zeroOrMore>
+        <oneOrMore>
+            <element name="entry">
+                <optional>
+                    <attribute name="weight">
+                        <data type="integer" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"/>
+                    </attribute>
+                </optional>
+                <ref name="content"/>
+            </element>
+        </oneOrMore>
+    </define>
+
+    <define name="content">
+        <interleave>
+            <zeroOrMore>
+                <text/>
+            </zeroOrMore>
+            <zeroOrMore>
+                <element name="embed">
+                    <attribute name="category">
+                        <text/>
+                    </attribute>
+                    <optional>
+                        <attribute name="filter">
+                            <text/>
+                        </attribute>
+                    </optional>
+                    <optional>
+                        <attribute name="namespace">
+                            <text/>
+                        </attribute>
+                    </optional>
+                    <zeroOrMore>
+                        <element name="param">
+                            <attribute name="name">
+                                <text/>
+                            </attribute>
+                            <attribute name="value">
+                                <text/>
+                            </attribute>
+                            <optional>
+                                <attribute name="filter">
+                                    <text/>
+                                </attribute>
+                            </optional>
+                        </element>
+                    </zeroOrMore>
+                </element>
+            </zeroOrMore>
+            <zeroOrMore>
+                <element name="echo">
+                    <attribute name="param">
+                        <text/>
+                    </attribute>
+                </element>
+            </zeroOrMore>
+            <zeroOrMore>
+                <element name="if">
+                    <attribute name="param">
+                        <text/>
+                    </attribute>
+                    <attribute name="match">
+                        <text/>
+                    </attribute>
+                    <element name="then">
+                        <ref name="content"/>
+                    </element>
+                    <optional>
+                        <element name="else">
+                            <optional>
+                                <attribute name="param">
+                                    <text/>
+                                </attribute>
+                                <attribute name="match">
+                                    <text/>
+                                </attribute>
+                            </optional>
+                        </element>
+                    </optional>
+                </element>
+            </zeroOrMore>
+        </interleave>
+    </define>
+</grammar>

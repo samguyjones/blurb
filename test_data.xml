@@ -1,5 +1,6 @@
 <blurb>
     <pattern>
+        <param name="funny"></param>
         <entry><embed category="abstraction" filter="Ucfirst"/> is the root of <embed
                 category="abstraction"/>.</entry>
         <entry weight="20">A funny word is "<embed category="funnyword" filter="ucfirst"/>".</entry>
@@ -13,7 +14,8 @@
             <entry>despair</entry>
         </category>
         <category name="funnyword">
-            <entry>weaselnipples</entry>
+            <param name="funny" default="nipples"></param>
+            <entry>weasel<echo param="funny"/></entry>
         </category>
     </namespace>
 </blurb>

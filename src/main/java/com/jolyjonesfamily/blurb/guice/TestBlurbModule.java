@@ -15,10 +15,10 @@ public class TestBlurbModule extends AbstractModule{
     protected static final String TEST_XML_FILENAME = "test_data.xml";
 
     @Override protected void configure()
-    {
-        bind(String.class)
-            .annotatedWith(Names.named("Config"))
-            .toInstance(TEST_XML_FILENAME);
+//    {
+//        bind(String.class)
+//            .annotatedWith(Names.named("Config"))
+//            .toInstance(TEST_XML_FILENAME);
     }
 
     @Provides public Selector provideSelector()

@@ -1,0 +1,21 @@
+<blurb>
+    <pattern>
+        <entry>
+            <embed category="abstraction" filter="Ucfirst"/> is the root of <embed category="abstraction"/>.
+        </entry>
+        <entry weight="20">There is no <echo param="subject"/>, only <embed category="abstraction"/>.</entry>
+    </pattern>
+    <namespaces>
+        <namespace name="main">
+            <categories>
+                <category name="abstraction">
+                    <entry>love</entry>
+                    <entry>anger</entry>
+                    <entry>happiness</entry>
+                    <entry>faith</entry>
+                    <entry>despair</entry>
+                </category>
+            </categories>
+        </namespace>
+    </namespaces>
+</blurb>
