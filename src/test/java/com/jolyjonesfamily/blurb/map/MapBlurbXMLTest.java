@@ -1,5 +1,8 @@
 package com.jolyjonesfamily.blurb.map;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.jolyjonesfamily.blurb.guice.TestBlurbModule;
 import com.jolyjonesfamily.blurb.models.Blurb;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,17 +19,16 @@ import static org.junit.Assert.fail;
  */
 public class MapBlurbXMLTest {
     private Blurb blurb;
-    private static final String TEST_FILENAME = "pithy.xml";
+
 
     @Before
     public void setUp()
     {
-        ClassLoader loader = getClass().getClassLoader();
-        MapBlurbXML map = new MapBlurbXML(new File(loader.getResource(TEST_FILENAME).getFile()));
+        Injector injector = Guice.createInjector( new TestBlurbModule() );
+        MapBlurb map = injector.getInstance(MapBlurbXML.class);
         try {
             blurb = map.getMappedBlurb();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             fail(e.getMessage());
         }
     }

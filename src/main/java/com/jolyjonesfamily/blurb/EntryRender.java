@@ -1,6 +1,5 @@
 package com.jolyjonesfamily.blurb;
 
-import com.jolyjonesfamily.blurb.models.Cat;
 import com.jolyjonesfamily.blurb.models.Echo;
 import com.jolyjonesfamily.blurb.models.Embed;
 import com.jolyjonesfamily.blurb.models.Entry;
@@ -10,10 +9,7 @@ import com.jolyjonesfamily.blurb.models.Entry;
 // */
 public class EntryRender {
     private static final String FILTER_NAMESPACE = "com.jolyjonesfamily.blurb.filter.";
-    private static final String DEFAULT_ECHO = "UNDEFINED";
-    private static final String PARAMETER_TYPE = "param";
-    private static final String PARAM_KEY_FIELD = "name";
-    private static final String PARAM_VALUE_FIELD = "value";
+    private static final String MISSING_PARAM_TEXT = "undefined";
     private CategorySwitch parentCategory;
     public Entry entry;
 
@@ -57,7 +53,8 @@ public class EntryRender {
         } else if (content.getClass() == Echo.class) {
             // @todo Add a case if the param isn't set
             Echo echo = (Echo) content;
-            return parentCategory.getParam(echo.getParam());
+            return (parentCategory.getParam(echo.getParam()) == null) ?
+                MISSING_PARAM_TEXT : showText(parentCategory.getParam(echo.getParam()));
         } else if (content.getClass() == Embed.class) {
             Embed embed = (Embed) content;
             CategorySwitch subcat;
@@ -70,7 +67,7 @@ public class EntryRender {
                     embed.getNamespace(), embed.getCategory(),
                     parentCategory.getParams());
             }
-            return subcat.getOutput();
+            return showText(subcat.getOutput());
         }
         // @todo Throw exception here
         return "";
@@ -182,6 +179,6 @@ public class EntryRender {
         if (plainText.trim().isEmpty()) {
             return "";
         }
-        return plainText;
+        return plainText.trim();
     }
 }

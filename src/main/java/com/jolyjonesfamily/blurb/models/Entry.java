@@ -51,7 +51,7 @@ public class Entry
      *     
      */
     public Integer getWeight() {
-        return weight;
+        return (weight == null) ? 1 : weight;
     }
 
     /**

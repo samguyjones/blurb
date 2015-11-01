@@ -1,7 +1,5 @@
 package com.jolyjonesfamily.blurb;
 
-import com.google.inject.Inject;
-import com.google.inject.Provides;
 import com.jolyjonesfamily.blurb.models.Blurb;
 import com.jolyjonesfamily.blurb.models.Cat;
 import java.util.*;
@@ -29,7 +27,6 @@ public class CategorySwitch {
     /**
      * Number picker, typically random.
      */
-    @Inject
     private static Selector generator;
 
     /**
@@ -57,7 +54,11 @@ public class CategorySwitch {
     private CategorySwitch(Cat myCategory, Map<String, String> params)
     {
         this.category = myCategory;
-        initializeCategory(params);
+        assignWeightedValue();
+        assignParams(params);
+        if (getGenerator() == null) {
+            setGenerator(RandomSelector.getInstance());
+        }
     }
 
     /**
@@ -105,16 +106,21 @@ public class CategorySwitch {
     }
 
     /**
-     * Part of the constructor, this derives the information the
-     * switch needs to act on its category.
+     * Set the thing that handles picking for this instance.
      *
-     * @param params key/value pairs of params the get passed through
-     *               the category.
+     * @return
      */
-    protected void initializeCategory(Map<String, String> params)
-    {
-        assignWeightedValue();
-        assignParams(params);
+    public static Selector getGenerator() {
+        return generator;
+    }
+
+    /**
+     * Set the thing that handles picking for this instance.
+     *
+     * @param generator
+     */
+    public static void setGenerator(Selector generator) {
+        CategorySwitch.generator = generator;
     }
 
     /**
@@ -123,6 +129,7 @@ public class CategorySwitch {
      * @param params key/value pairs passed across categories.
      */
     private void assignParams(Map<String, String> params) {
+        this.params = new HashMap<String, String>();
         for (Param myParam: category.getParam()) {
             this.params.put(myParam.getName(), myParam.getDefault());
         }
@@ -138,7 +145,7 @@ public class CategorySwitch {
     {
         maxWeightedValue = 0;
         for(Entry myEntry : category.getEntry()) {
-            maxWeightedValue += (myEntry.getWeight() == null) ? 1 : myEntry.getWeight();
+            maxWeightedValue += myEntry.getWeight();
         }
     }
 
@@ -158,6 +165,10 @@ public class CategorySwitch {
      */
     public String getParam(String key) {
         return params.get(key);
+    }
+
+    public Cat getCategory() {
+        return category;
     }
 
     /**

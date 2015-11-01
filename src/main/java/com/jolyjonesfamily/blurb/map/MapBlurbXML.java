@@ -1,5 +1,6 @@
 package com.jolyjonesfamily.blurb.map;
 
+import com.google.inject.Inject;
 import com.jolyjonesfamily.blurb.models.Blurb;
 
 import javax.xml.bind.JAXBContext;
@@ -24,6 +25,7 @@ public class MapBlurbXML implements MapBlurb {
      *
      * @param blurbFile Blurb settings in XML.
      */
+    @Inject
     public MapBlurbXML(File blurbFile) {
         setBlurbFile(blurbFile);
     }
