@@ -1,14 +1,20 @@
 package com.jolyjonesfamily.blurb;
 
+import com.jolyjonesfamily.blurb.filter.Filter;
 import com.jolyjonesfamily.blurb.models.Echo;
 import com.jolyjonesfamily.blurb.models.Embed;
 import com.jolyjonesfamily.blurb.models.Entry;
+
+import java.lang.reflect.Constructor;
+import java.util.HashMap;
+import java.util.Map;
 
 ///**
 // * Created by samjones on 4/6/14.
 // */
 public class EntryRender {
     private static final String FILTER_NAMESPACE = "com.jolyjonesfamily.blurb.filter.";
+    private static final String FILTER_INTERFACE = "com.jolyjonesfamily.blurb.filter.Filter";
     private static final String MISSING_PARAM_TEXT = "undefined";
     private CategorySwitch parentCategory;
     public Entry entry;
@@ -51,27 +57,48 @@ public class EntryRender {
         if (content.getClass() == String.class) {
             return content.toString();
         } else if (content.getClass() == Echo.class) {
-            // @todo Add a case if the param isn't set
             Echo echo = (Echo) content;
             return (parentCategory.getParam(echo.getParam()) == null) ?
                 MISSING_PARAM_TEXT : showText(parentCategory.getParam(echo.getParam()));
         } else if (content.getClass() == Embed.class) {
-            Embed embed = (Embed) content;
-            CategorySwitch subcat;
-            // @todo modify params based on entry param elements
-            if (embed.getNamespace() == null) {
-                subcat = parentCategory.getCatalog().fetch(
-                    embed.getCategory(), parentCategory.getParams());
-            } else {
-                subcat = parentCategory.getCatalog().fetch(
-                    embed.getNamespace(), embed.getCategory(),
-                    parentCategory.getParams());
-            }
-            return showText(subcat.getOutput());
+            return getEmbedText((Embed) content);
         }
         // @todo Throw exception here
         return "";
     }
+
+    private String getEmbedText(Embed content) {
+        Embed embed = (Embed) content;
+        CategorySwitch subcat;
+        if (embed.getNamespace() == null) {
+            subcat = parentCategory.getCatalog().fetch(
+                embed.getCategory(), getParamSet(embed));
+        } else {
+            subcat = parentCategory.getCatalog().fetch(
+                embed.getNamespace(), embed.getCategory(),
+                getParamSet(embed));
+        }
+        String response = subcat.getOutput();
+        if (embed.getFilter() != null) {
+            response = filter(response, embed.getFilter());
+        }
+        return showText(response);
+    }
+
+    private Map getParamSet(Embed embed) {
+        Map paramSet;
+        if (embed.getParam() == null) {
+            paramSet = parentCategory.getParams();
+        } else {
+            paramSet = new HashMap<String, String>();
+            paramSet.putAll(parentCategory.getParams());
+            for (Embed.Param myParam : embed.getParam()) {
+                paramSet.put(myParam.getName(), myParam.getValue());
+            }
+        }
+        return paramSet;
+    }
+
 //    /**
 //     * Central method that figures out what the text value of the entry should be.
 //     * @return
@@ -106,6 +133,37 @@ public class EntryRender {
         return parentCategory.getParam(key);
     }
 
+    /**
+     * Pull out the filter from reflection and use it to filter the provided string.
+     *
+     * @param original
+     * @param filterName
+     * @return
+     */
+    protected String filter(String original, String filterName)
+    {
+        try {
+            String inFilter = Character.toUpperCase(filterName.charAt(0)) + filterName.substring(1);
+            Class filterClass = Class.forName(FILTER_NAMESPACE + inFilter);
+            Boolean valid = false;
+            for (Class myInterface : filterClass.getInterfaces()) {
+                if (myInterface.getName() == FILTER_INTERFACE) {
+                    valid=true;
+                }
+            }
+            if (!valid) {
+                throw new Exception("Class " + filterClass.getName() + "does not extend "
+                        + FILTER_INTERFACE);
+            }
+            Constructor emptyConstructor = filterClass.getConstructors()[0];
+            Filter filterType = (Filter) emptyConstructor.newInstance();
+            return filterType.filter(original);
+        } catch (Exception e) {
+            System.err.println(e.getClass().toString() + ":" + e.getMessage());
+            System.exit(1);
+        }
+        return null;
+    }
 //    /**
 //     * Return the category of specified element.
 //     *
@@ -145,27 +203,7 @@ public class EntryRender {
 //        return embedCategory;
 //    }
 //
-//    /**
-//     * Pull out the filter from reflection and use it to filter the provided string.
-//     *
-//     * @param original
-//     * @param filterName
-//     * @return
-//     */
-//    protected String filter(String original, String filterName)
-//    {
-//        try {
-//            String inFilter = Character.toUpperCase(filterName.charAt(0)) + filterName.substring(1);
-//            Class filterClass = Class.forName(FILTER_NAMESPACE + inFilter);
-//            Constructor emptyConstructor = filterClass.getConstructors()[0];
-//            Filter filterType = (Filter) emptyConstructor.newInstance();
-//            return filterType.filter(original);
-//        } catch (Exception e) {
-//            System.err.println(e.getClass().toString() + ":" + e.getMessage());
-//            System.exit(1);
-//        }
-//        return null;
-//    }
+
 
     /**
      * Wrapper for postprocessing of the string.  Currently just empty string if string

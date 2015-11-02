@@ -39,9 +39,31 @@ public class EntryRenderTest extends BlurbTest {
             push(0);
         }}));
         EntryRender entry = blurbCatalog.fetch(new HashMap<String, String>()).chooseEntry();
-        assertEquals("faith is the root of anger.", entry.getOutput());
+        assertEquals("Faith is the root of anger.", entry.getOutput());
     }
 
     @Test
-    public void
+    public void echoEntry()
+    {
+        CategorySwitch.setGenerator(new TestSelector(new Stack<Integer>() {{
+            push(1);
+            push(3);
+            push(2);
+        }}));
+        EntryRender entry = blurbCatalog.fetch(new HashMap<String, String>() {{
+            put("subject", "Zane");
+        }}).chooseEntry();
+        assertEquals("There is no Zane, only faith.", entry.getOutput());
+    }
+
+    @Test
+    public void missingParam()
+    {
+        CategorySwitch.setGenerator(new TestSelector(new Stack<Integer>() {{
+            push(3);
+            push(2);
+        }}));
+        EntryRender entry = blurbCatalog.fetch(new HashMap<String, String>()).chooseEntry();
+        assertEquals("There is no undefined, only faith.", entry.getOutput());
+    }
 }
