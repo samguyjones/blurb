@@ -13,6 +13,14 @@ public class TestSelector implements Selector{
         numberSet = preSet;
     }
 
+    public TestSelector(Integer[] preSet) {
+        Stack<Integer> stack = new Stack<Integer>();
+        for (Integer myNum : preSet) {
+            stack.push(myNum);
+        }
+        numberSet = stack;
+    }
+
     public int PickNumber(int limit)
     {
         return Math.min(numberSet.pop(), limit);

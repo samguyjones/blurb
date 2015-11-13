@@ -167,6 +167,10 @@ public class CategorySwitch {
         return params.get(key);
     }
 
+    public void setParams(Map<String, String> params) {
+        this.params = params;
+    }
+
     public Cat getCategory() {
         return category;
     }
@@ -193,6 +197,7 @@ public class CategorySwitch {
             random -= choice.getWeight();
             if (random < 0) return new EntryRender(choice, this);
         }
-        return null;
+        throw new IndexOutOfBoundsException("Generated number extends " +
+            String.valueOf(random) + " steps past possible entries");
     }
 }

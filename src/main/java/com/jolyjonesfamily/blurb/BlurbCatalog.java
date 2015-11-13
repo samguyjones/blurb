@@ -60,6 +60,8 @@ public class BlurbCatalog {
         if (homeCategory == null) {
             homeCategory = new CategorySwitch(blurb, params)
                 .setCatalog(this);
+        } else {
+            homeCategory.setParams(params);
         }
         return homeCategory;
     }

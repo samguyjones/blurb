@@ -116,6 +116,9 @@
                                     <text/>
                                 </attribute>
                             </optional>
+                            <element name="then">
+                                <ref name="content"/>
+                            </element>
                         </element>
                     </optional>
                 </element>

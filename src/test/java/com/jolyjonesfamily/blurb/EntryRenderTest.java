@@ -22,9 +22,7 @@ public class EntryRenderTest extends BlurbTest {
     @Test
     public void simpleEntry()
     {
-        CategorySwitch.setGenerator(new TestSelector(new Stack<Integer>() {{
-            push(2);
-        }}));
+        CategorySwitch.setGenerator(new TestSelector(new Integer[]{2}));
         EntryRender entry = blurbCatalog.fetch("main","abstraction",
                 new HashMap<String, String>()).chooseEntry();
         assertEquals("happiness", entry.getOutput());
@@ -33,11 +31,7 @@ public class EntryRenderTest extends BlurbTest {
     @Test
     public void embedEntry()
     {
-        CategorySwitch.setGenerator(new TestSelector(new Stack<Integer>() {{
-            push(1);
-            push(3);
-            push(0);
-        }}));
+        CategorySwitch.setGenerator(new TestSelector(new Integer[] {1,3,0}));
         EntryRender entry = blurbCatalog.fetch(new HashMap<String, String>()).chooseEntry();
         assertEquals("Faith is the root of anger.", entry.getOutput());
     }
@@ -45,11 +39,7 @@ public class EntryRenderTest extends BlurbTest {
     @Test
     public void echoEntry()
     {
-        CategorySwitch.setGenerator(new TestSelector(new Stack<Integer>() {{
-            push(1);
-            push(3);
-            push(2);
-        }}));
+        CategorySwitch.setGenerator(new TestSelector(new Integer[]{1,3,2}));
         EntryRender entry = blurbCatalog.fetch(new HashMap<String, String>() {{
             put("subject", "Zane");
         }}).chooseEntry();
@@ -59,11 +49,28 @@ public class EntryRenderTest extends BlurbTest {
     @Test
     public void missingParam()
     {
-        CategorySwitch.setGenerator(new TestSelector(new Stack<Integer>() {{
-            push(3);
-            push(2);
-        }}));
+        CategorySwitch.setGenerator(new TestSelector(new Integer[]{3,2}));
         EntryRender entry = blurbCatalog.fetch(new HashMap<String, String>()).chooseEntry();
         assertEquals("There is no undefined, only faith.", entry.getOutput());
+    }
+
+    @Test
+    public void ifResult()
+    {
+        CategorySwitch.setGenerator(new TestSelector(new Integer[]{3,21}));
+        EntryRender entry = blurbCatalog.fetch(new HashMap<String, String>() {{
+            put("subject", "puppy");
+        }}).chooseEntry();
+        assertEquals("Faith is a warm puppy.", entry.getOutput());
+        CategorySwitch.setGenerator(new TestSelector(new Integer[]{1,21}));
+        entry = blurbCatalog.fetch(new HashMap<String, String>() {{
+            put("subject", "poodle");
+        }}).chooseEntry();
+        assertEquals("Anger is a vicious poodle.", entry.getOutput());
+        CategorySwitch.setGenerator(new TestSelector(new Integer[]{2,21}));
+        entry = blurbCatalog.fetch(new HashMap<String, String>() {{
+            put("subject", "kitty");
+        }}).chooseEntry();
+        assertEquals("Happiness is a kitty.", entry.getOutput());
     }
 }

@@ -1,12 +1,11 @@
 package com.jolyjonesfamily.blurb;
 
 import com.jolyjonesfamily.blurb.filter.Filter;
-import com.jolyjonesfamily.blurb.models.Echo;
-import com.jolyjonesfamily.blurb.models.Embed;
-import com.jolyjonesfamily.blurb.models.Entry;
+import com.jolyjonesfamily.blurb.models.*;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 ///**
@@ -39,8 +38,12 @@ public class EntryRender {
      */
     public String getOutput()
     {
+        return contentSetFetch(entry.getContent());
+    }
+
+    private String contentSetFetch(List<Object> contentSet) {
         String output = "";
-        for (Object myContent : entry.getContent()) {
+        for (Object myContent : contentSet) {
             output += contentFetch(myContent);
         }
         return output;
@@ -59,7 +62,9 @@ public class EntryRender {
         } else if (content.getClass() == Echo.class) {
             Echo echo = (Echo) content;
             return (parentCategory.getParam(echo.getParam()) == null) ?
-                MISSING_PARAM_TEXT : showText(parentCategory.getParam(echo.getParam()));
+                    MISSING_PARAM_TEXT : showText(parentCategory.getParam(echo.getParam()));
+        } else if (content.getClass() == If.class) {
+            return getIfText((If) content);
         } else if (content.getClass() == Embed.class) {
             return getEmbedText((Embed) content);
         }
@@ -67,6 +72,28 @@ public class EntryRender {
         return "";
     }
 
+    private String getIfText(If content) {
+        String key = content.getParam();
+        Else alternate = content.getElse();
+        if (getParam(key).equals(content.getMatch())) {
+            return contentSetFetch(content.getThen().getContent());
+        } else if (null != alternate) {
+            key = alternate.getParam();
+            // Else condition doesn't exist or is met, else runs
+            if (key.equals(null) || getParam(key).equals(alternate.getMatch())) {
+                return contentSetFetch(alternate.getThen().getContent());
+            }
+        }
+        // If neither 'if' nor else is met, return empty.
+        return "";
+    }
+
+    /**
+     * Pull the embedded text for an embed tag and return it.
+     *
+     * @param content An Embed model object in the content
+     * @return rendered form of content after fetch
+     */
     private String getEmbedText(Embed content) {
         Embed embed = (Embed) content;
         CategorySwitch subcat;
@@ -85,6 +112,14 @@ public class EntryRender {
         return showText(response);
     }
 
+    /**
+     * Retrieve params for an embed tag, which include all params
+     * inherited from the parent category along with whatever params
+     * are set inside the embed tag itself.
+     *
+     * @param embed An embed model object with possible params
+     * @return A map of key-value pairs of the params
+     */
     private Map getParamSet(Embed embed) {
         Map paramSet;
         if (embed.getParam() == null) {
@@ -99,34 +134,7 @@ public class EntryRender {
         return paramSet;
     }
 
-//    /**
-//     * Central method that figures out what the text value of the entry should be.
-//     * @return
-//     */
-//    public String getOutput()
-//    {
-//        NodeList children = element.getChildNodes();
-//        String output = "";
-//        for (int count=0;count < children.getLength();count++) {
-//            Node myNode = children.item(count);
-//            if (myNode.getNodeType() == Node.TEXT_NODE) {
-//                output += showText(myNode.getTextContent());
-//            } else if (myNode.getNodeName().equals("embed")) {
-//                Element embed = (Element) myNode;
-//                String embedOut = getPopulatedEmbed(embed).chooseEntry().getOutput();
-//                if (embed.hasAttribute("filter")) {
-//                    embedOut = filter(embedOut, embed.getAttribute("filter"));
-//                }
-//                output += embedOut;
-//            } else if (myNode.getNodeName().equals("echo")) {
-//                Element echo = (Element) myNode;
-//                String echoed = (getParam(echo.getAttribute("param")) == null) ?
-//                    DEFAULT_ECHO : getParam(echo.getAttribute("param"));
-//                output += echoed;
-//            }
-//        }
-//        return output;
-//    }
+
 
     private String getParam(String key)
     {
@@ -164,45 +172,7 @@ public class EntryRender {
         }
         return null;
     }
-//    /**
-//     * Return the category of specified element.
-//     *
-//     * @param embed
-//     * @return
-//     */
-//    protected CategoryChooser getCategory(Element embed)
-//    {
-//        if (embed.hasAttribute("namespace")) {
-//            return CategoryChooser.getCategory(embed.getAttribute("namespace"),
-//                    embed.getAttribute("category"));
-//        } else {
-//            return CategoryChooser.getCategory(embed.getAttribute("category"));
-//        }
-//    }
-//
-//    /**
-//     * Return the category of specified element with added parameters.
-//     *
-//     * @param embed
-//     * @return
-//     */
-//    protected CategoryChooser getPopulatedEmbed(Element embed)
-//    {
-//        CategoryChooser embedCategory = getCategory(embed);
-//        NodeList paramList = embed.getElementsByTagName(PARAMETER_TYPE);
-//        if (paramList.getLength() == 0) {
-//            embedCategory.setParams(null);
-//            return embedCategory;
-//        }
-//        Map<String, String> params = new HashMap<String,String>();
-//        for (int count = 0; count < paramList.getLength(); count++){
-//            Element myParam = (Element) paramList.item(count);
-//            params.put(myParam.getAttribute(PARAM_KEY_FIELD),
-//                myParam.getAttribute(PARAM_VALUE_FIELD));
-//        }
-//        return embedCategory;
-//    }
-//
+
 
 
     /**

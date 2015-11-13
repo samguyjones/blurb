@@ -102,6 +102,9 @@
   <xs:element name="then" type="content"/>
   <xs:element name="else">
     <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="then"/>
+      </xs:sequence>
       <xs:attribute name="param"/>
       <xs:attribute name="match"/>
     </xs:complexType>
