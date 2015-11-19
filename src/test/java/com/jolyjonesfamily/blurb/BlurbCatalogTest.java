@@ -37,4 +37,13 @@ public class BlurbCatalogTest extends BlurbTest {
         assertEquals("frogs", abstraction.getParam("also"));
         assertEquals((Integer) 5, (Integer) abstraction.getCategory().getEntry().size());
     }
+
+    @Test
+    public void secondNamespace() throws Exception {
+        CategorySwitch otherAbstraction = catalog.fetch("second", "abstraction",
+            new HashMap<String, String>());
+        assertEquals("religion", otherAbstraction.getCategory().getEntry(0).getContent(0));
+        assertEquals("friendship", otherAbstraction.getCategory().getEntry(2).getContent(0));
+        assertEquals((Integer) 3, (Integer) otherAbstraction.getCategory().getEntry().size());
+    }
 }

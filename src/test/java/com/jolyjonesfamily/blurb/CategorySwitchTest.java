@@ -26,10 +26,7 @@ public class CategorySwitchTest extends BlurbTest {
         CategorySwitch pattern = new CategorySwitch(blurb, new HashMap() {{
             put("foo", "bar");
         }});
-        CategorySwitch.setGenerator(new TestSelector(new Stack<Integer>() {{
-            push(1);
-            push(0);
-        }}));
+        CategorySwitch.setGenerator(new TestSelector(new Integer[] {1,0}));
         assertEquals((Integer) 20, pattern.getCategory().getEntry(1).getWeight());
         assertEquals((Integer) 1, pattern.chooseEntry().entry.getWeight());
         assertEquals((Integer) 20, pattern.chooseEntry().entry.getWeight());
@@ -43,10 +40,7 @@ public class CategorySwitchTest extends BlurbTest {
             new HashMap() {{
             put("pig", "foot");
         }});
-        CategorySwitch.setGenerator(new TestSelector(new Stack<Integer>() {{
-            push(1);
-            push(0);
-        }}));
+        CategorySwitch.setGenerator(new TestSelector(new Integer[] {1,0}));
         assertEquals("love", abstraction.chooseEntry().entry.getContent(0));
         assertEquals("anger", abstraction.chooseEntry().entry.getContent(0));
     }

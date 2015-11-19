@@ -53,4 +53,11 @@ public class MapBlurbXMLTest {
         assertEquals("love", (String) blurb.getNamespace("main").getCategory("abstraction")
                 .getEntry(0).getContent(0));
     }
+
+    @Test
+    public void testNamespaces()
+    {
+        assertEquals("friendship", (String) blurb.getNamespace("second").getCategory("abstraction")
+                .getEntry(2).getContent(0));
+    }
 }

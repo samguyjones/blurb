@@ -9,7 +9,9 @@
                 <then>vicious </then>
             </else>
         </if><echo param="subject"/>.</entry>
-
+        <entry><embed category="abstraction" filter="ucfirst">
+            </embed> defines <embed namespace="second" category="abstraction">
+        </embed>.</entry>
     </pattern>
     <namespaces>
         <namespace name="main">
@@ -20,6 +22,15 @@
                     <entry>happiness</entry>
                     <entry>faith</entry>
                     <entry>despair</entry>
+                </category>
+            </categories>
+        </namespace>
+        <namespace name="second">
+            <categories>
+                <category name="abstraction">
+                    <entry>religion</entry>
+                    <entry weight="4">hope</entry>
+                    <entry>friendship</entry>
                 </category>
             </categories>
         </namespace>

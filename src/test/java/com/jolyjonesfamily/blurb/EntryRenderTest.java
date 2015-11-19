@@ -37,6 +37,14 @@ public class EntryRenderTest extends BlurbTest {
     }
 
     @Test
+    public void embedNamespaceEntry()
+    {
+        CategorySwitch.setGenerator(new TestSelector(new Integer[] {1,0,22}));
+        EntryRender entry = blurbCatalog.fetch(new HashMap<String, String>()).chooseEntry();
+        assertEquals("Love defines hope.", entry.getOutput());
+    }
+
+    @Test
     public void echoEntry()
     {
         CategorySwitch.setGenerator(new TestSelector(new Integer[]{1,3,2}));
