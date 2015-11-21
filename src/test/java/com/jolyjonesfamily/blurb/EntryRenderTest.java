@@ -75,6 +75,11 @@ public class EntryRenderTest extends BlurbTest {
             put("subject", "poodle");
         }}).chooseEntry();
         assertEquals("Anger is a vicious poodle.", entry.getOutput());
+        CategorySwitch.setGenerator(new TestSelector(new Integer[]{4,21}));
+        entry = blurbCatalog.fetch(new HashMap<String, String>() {{
+            put("subject", "gecko");
+        }}).chooseEntry();
+        assertEquals("Despair is a bored gecko.", entry.getOutput());
         CategorySwitch.setGenerator(new TestSelector(new Integer[]{2,21}));
         entry = blurbCatalog.fetch(new HashMap<String, String>() {{
             put("subject", "kitty");

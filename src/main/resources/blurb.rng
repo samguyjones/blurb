@@ -106,7 +106,7 @@
                     <element name="then">
                         <ref name="content"/>
                     </element>
-                    <optional>
+                    <zeroOrMore>
                         <element name="else">
                             <optional>
                                 <attribute name="param">
@@ -120,7 +120,7 @@
                                 <ref name="content"/>
                             </element>
                         </element>
-                    </optional>
+                    </zeroOrMore>
                 </element>
             </zeroOrMore>
         </interleave>

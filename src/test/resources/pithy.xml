@@ -8,6 +8,9 @@
             <else param="subject" match="poodle">
                 <then>vicious </then>
             </else>
+            <else param="subject" match="gecko">
+                <then>bored </then>
+            </else>
         </if><echo param="subject"/>.</entry>
         <entry><embed category="abstraction" filter="ucfirst">
             </embed> defines <embed namespace="second" category="abstraction">

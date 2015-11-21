@@ -93,7 +93,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element ref="then"/>
-        <xs:element minOccurs="0" ref="else"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="else"/>
       </xs:sequence>
       <xs:attribute name="param" use="required"/>
       <xs:attribute name="match" use="required"/>

@@ -74,14 +74,15 @@ public class EntryRender {
 
     private String getIfText(If content) {
         String key = content.getParam();
-        Else alternate = content.getElse();
-        if (getParam(key).equals(content.getMatch())) {
-            return contentSetFetch(content.getThen().getContent());
-        } else if (null != alternate) {
-            key = alternate.getParam();
-            // Else condition doesn't exist or is met, else runs
-            if (key.equals(null) || getParam(key).equals(alternate.getMatch())) {
-                return contentSetFetch(alternate.getThen().getContent());
+        for (Else alternate : content.getElse()) {
+            if (getParam(key).equals(content.getMatch())) {
+                return contentSetFetch(content.getThen().getContent());
+            } else if (null != alternate) {
+                key = alternate.getParam();
+                // Else condition doesn't exist or is met, else runs
+                if (key.equals(null) || getParam(key).equals(alternate.getMatch())) {
+                    return contentSetFetch(alternate.getThen().getContent());
+                }
             }
         }
         // If neither 'if' nor else is met, return empty.
