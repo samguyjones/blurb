@@ -15,10 +15,17 @@
         <entry><embed category="abstraction" filter="ucfirst">
             </embed> defines <embed namespace="second" category="abstraction">
         </embed>.</entry>
+        <entry><embed category="self reference"/></entry>
     </pattern>
     <namespaces>
         <namespace name="main">
             <categories>
+                <category name="self reference">
+                    <param name="repeat">
+                        <derive><embed category="abstraction"/></derive>
+                    </param>
+                    <entry>People value <echo param="repeat"/> for <echo param="repeat"/>'s sake.</entry>
+                </category>
                 <category name="abstraction">
                     <entry>love</entry>
                     <entry>anger</entry>

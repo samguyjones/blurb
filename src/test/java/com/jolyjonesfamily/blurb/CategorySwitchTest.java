@@ -23,7 +23,7 @@ public class CategorySwitchTest extends BlurbTest {
 
     @Test
     public void getPattern() {
-        CategorySwitch pattern = new CategorySwitch(blurb, new HashMap() {{
+        CategorySwitch pattern = new CategorySwitch(new BlurbCatalog(blurb), new HashMap() {{
             put("foo", "bar");
         }});
         CategorySwitch.setGenerator(new TestSelector(new Integer[] {1,0}));
@@ -36,7 +36,7 @@ public class CategorySwitchTest extends BlurbTest {
 
     @Test
     public void getMainCategory() {
-        CategorySwitch abstraction = new CategorySwitch(blurb, "main", "abstraction",
+        CategorySwitch abstraction = new CategorySwitch(new BlurbCatalog(blurb), "main", "abstraction",
             new HashMap() {{
             put("pig", "foot");
         }});
@@ -44,5 +44,4 @@ public class CategorySwitchTest extends BlurbTest {
         assertEquals("love", abstraction.chooseEntry().entry.getContent(0));
         assertEquals("anger", abstraction.chooseEntry().entry.getContent(0));
     }
-
 }

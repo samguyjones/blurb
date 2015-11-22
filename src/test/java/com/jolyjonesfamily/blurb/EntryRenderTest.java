@@ -86,4 +86,13 @@ public class EntryRenderTest extends BlurbTest {
         }}).chooseEntry();
         assertEquals("Happiness is a kitty.", entry.getOutput());
     }
+
+    @Test
+    public void deriveParam()
+    {
+        CategorySwitch.setGenerator(new TestSelector(new Integer[]{0,0,23}));
+        EntryRender entry = blurbCatalog.fetch(new HashMap<String, String>()).chooseEntry();
+        assertEquals("People value love for love's sake.", entry.getOutput());
+
+    }
 }

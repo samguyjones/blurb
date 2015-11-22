@@ -37,6 +37,11 @@
                         <text/>
                     </attribute>
                 </optional>
+                <optional>
+                    <element name="derive">
+                        <ref name="content"/>
+                    </element>
+                </optional>
             </element>
         </zeroOrMore>
         <oneOrMore>

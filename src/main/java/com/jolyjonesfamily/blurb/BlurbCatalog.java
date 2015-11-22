@@ -58,8 +58,7 @@ public class BlurbCatalog {
     public CategorySwitch fetch(Map<String, String> params)
     {
         if (homeCategory == null) {
-            homeCategory = new CategorySwitch(blurb, params)
-                .setCatalog(this);
+            homeCategory = new CategorySwitch(this, params);
         } else {
             homeCategory.setParams(params);
         }
@@ -80,10 +79,10 @@ public class BlurbCatalog {
             categories.put(namespace, new HashMap<String, CategorySwitch>());
         }
         if (!categories.get(namespace).containsValue(categoryName)) {
-            categories.get(namespace).put(categoryName,
-                new CategorySwitch(blurb, namespace, categoryName, params)
-                .setCatalog(this));
-
+            CategorySwitch newSwitch = new CategorySwitch(this, namespace,
+                categoryName, params);
+            categories.get(namespace).put(categoryName, newSwitch);
+            return newSwitch;
         }
         return categories.get(namespace).get(categoryName);
     }
@@ -118,5 +117,9 @@ public class BlurbCatalog {
     public String getOutput()
     {
         return getOutput(new HashMap<String, String>());
+    }
+
+    public Blurb getBlurb() {
+        return blurb;
     }
 }

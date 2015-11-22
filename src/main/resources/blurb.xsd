@@ -48,10 +48,14 @@
   </xs:complexType>
   <xs:element name="param">
     <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="derive"/>
+      </xs:sequence>
       <xs:attribute name="name" use="required"/>
       <xs:attribute name="default"/>
     </xs:complexType>
   </xs:element>
+  <xs:element name="derive" type="content"/>
   <xs:element name="entry">
     <xs:complexType>
       <xs:complexContent>

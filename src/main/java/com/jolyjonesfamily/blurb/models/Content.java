@@ -92,4 +92,9 @@ public class Content {
     public Object getContent(int index) {
         return this.getContent().get(index);
     }
+
+    public Content setContent(List<Object> content) {
+        this.content = content;
+        return this;
+    }
 }

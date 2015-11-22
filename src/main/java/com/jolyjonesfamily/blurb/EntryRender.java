@@ -19,7 +19,8 @@ public class EntryRender {
     public Entry entry;
 
     /**
-     * Constructor with basic parameters:  DOM element and weight.
+     * Constructor with basic parameters:  DOM element and owning
+     * category
      *
      * @param entry The POJO containing the render information
      * @param parentCategory The category that picked this entry and which has the
@@ -41,6 +42,13 @@ public class EntryRender {
         return contentSetFetch(entry.getContent());
     }
 
+    /**
+     * Given a block of content, iterate through it and return every
+     * individual piece of content.
+     *
+     * @param contentSet
+     * @return
+     */
     private String contentSetFetch(List<Object> contentSet) {
         String output = "";
         for (Object myContent : contentSet) {

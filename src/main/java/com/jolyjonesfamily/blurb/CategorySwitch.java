@@ -1,11 +1,9 @@
 package com.jolyjonesfamily.blurb;
 
-import com.jolyjonesfamily.blurb.models.Blurb;
-import com.jolyjonesfamily.blurb.models.Cat;
+import com.jolyjonesfamily.blurb.models.*;
+
 import java.util.*;
 
-import com.jolyjonesfamily.blurb.models.Entry;
-import com.jolyjonesfamily.blurb.models.Param;
 import com.jolyjonesfamily.blurb.selector.*;
 
 /**
@@ -34,10 +32,6 @@ public class CategorySwitch {
      */
     private Cat category;
 
-    /**
-     * Blurb model to start searching.
-     */
-    private Blurb blurb;
 
     /**
      * Parent catalog for maintaining a list of categories.
@@ -48,11 +42,13 @@ public class CategorySwitch {
      * All public methods call back to this private one.  Set up with
      * the category and params, the two basic things the switch needs.
      *
+     * @param catalog
      * @param myCategory
      * @param params
      */
-    private CategorySwitch(Cat myCategory, Map<String, String> params)
+    private CategorySwitch(BlurbCatalog catalog, Cat myCategory, Map<String, String> params)
     {
+        setCatalog(catalog);
         this.category = myCategory;
         assignWeightedValue();
         assignParams(params);
@@ -64,25 +60,23 @@ public class CategorySwitch {
     /**
      * Constructor for choosing the root pattern.
      *
-     * @param blurb Name of the blurb to pick
      */
-    public CategorySwitch(Blurb blurb, Map<String, String> params)
+    public CategorySwitch(BlurbCatalog catalog, Map<String, String> params)
     {
-        this(blurb.getPattern(), params);
-        this.blurb = blurb;
+        this(catalog, catalog.getBlurb().getPattern(), params);
     }
 
     /**
      * Constructor for choosing named category from named namespace.
      *
-     * @param blurb
+     * @param catalog Blurb catalog containing this switch's category
      * @param namespaceName
      * @param categoryName
      */
-    public CategorySwitch(Blurb blurb, String namespaceName, String categoryName, Map<String, String> params)
+    public CategorySwitch(BlurbCatalog catalog, String namespaceName, String categoryName,
+      Map<String, String> params)
     {
-        this(blurb.getNamespace(namespaceName).getCategory(categoryName), params);
-        this.blurb = blurb;
+        this(catalog, catalog.getBlurb().getNamespace(namespaceName).getCategory(categoryName), params);
     }
 
     /**
@@ -131,9 +125,22 @@ public class CategorySwitch {
     private void assignParams(Map<String, String> params) {
         this.params = new HashMap<String, String>();
         for (Param myParam: category.getParam()) {
-            this.params.put(myParam.getName(), myParam.getDefault());
+            this.params.put(myParam.getName(), paramValue(myParam));
         }
         this.params.putAll(params);
+    }
+
+    private String paramValue(Param param) {
+        if (null != param.getDefault()) {
+            return param.getDefault();
+        }
+        if (null != param.getDerive()) {
+            Entry pseudoEntry = (Entry) new Entry().setContent(
+                    param.getDerive().getContent()
+            );
+            return new EntryRender(pseudoEntry, this).getOutput();
+        }
+        return "";
     }
 
     /**
@@ -195,6 +202,7 @@ public class CategorySwitch {
         int random = (int) generator.PickNumber(maxWeightedValue);
         for (Entry choice : category.getEntry()) {
             random -= choice.getWeight();
+            // @todo Look into caching this.
             if (random < 0) return new EntryRender(choice, this);
         }
         throw new IndexOutOfBoundsException("Generated number extends " +
