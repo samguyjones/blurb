@@ -35,7 +35,7 @@ and embeds.  Here is an example:
 </blurb>
 ```
 
-There are two major kinds of entries this data file uses:
+There are two major kinds of sections to this data file, "category" and "entry":
 
 ##category
 This includes "pattern" and "category".  Categories include
