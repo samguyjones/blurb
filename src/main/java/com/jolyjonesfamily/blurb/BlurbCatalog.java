@@ -119,6 +119,11 @@ public class BlurbCatalog {
         return getOutput(new HashMap<String, String>());
     }
 
+    /**
+     * Fetch the model this class moves over.
+     *
+     * @return
+     */
     public Blurb getBlurb() {
         return blurb;
     }

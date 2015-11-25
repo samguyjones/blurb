@@ -80,6 +80,13 @@ public class EntryRender {
         return "";
     }
 
+    /**
+     * Process an If block in the model and return appropriate text referencing
+     * parameters.
+     *
+     * @param content
+     * @return
+     */
     private String getIfText(If content) {
         String key = content.getParam();
         for (Else alternate : content.getElse()) {

@@ -130,6 +130,12 @@ public class CategorySwitch {
         this.params.putAll(params);
     }
 
+    /**
+     * Retrieve or derive the value of the current parameter.
+     *
+     * @param param
+     * @return
+     */
     private String paramValue(Param param) {
         if (null != param.getDefault()) {
             return param.getDefault();
@@ -174,10 +180,20 @@ public class CategorySwitch {
         return params.get(key);
     }
 
+    /**
+     * Take a map of key/value strings and replace the existing parameters.
+     *
+     * @param params
+     */
     public void setParams(Map<String, String> params) {
         this.params = params;
     }
 
+    /**
+     * Return the model for this switch.
+     *
+     * @return
+     */
     public Cat getCategory() {
         return category;
     }
