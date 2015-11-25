@@ -14,7 +14,8 @@ to add optional parameters.
 The XML file spew uses defines a series of categories
 and embeds.  Here is an example:
 
-``` <blurb>
+```
+<blurb>
     <pattern>
         <entry><embed category="abstraction" filter="Ucfirst"/> is
         the root of <embed category="abstraction"/>.</entry> <entry
@@ -31,7 +32,8 @@ and embeds.  Here is an example:
             </categories>
         </namespace>
     </namespaces>
-</blurb> ```
+</blurb>
+```
 
 There are two major kinds of entries this data file uses:
 
