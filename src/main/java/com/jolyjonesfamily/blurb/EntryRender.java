@@ -37,7 +37,7 @@ public class EntryRender {
      *
      * @return Text representing this part of the embedding.
      */
-    public String getOutput()
+    public String getOutput() throws Exception
     {
         return contentSetFetch(entry.getContent());
     }
@@ -49,7 +49,8 @@ public class EntryRender {
      * @param contentSet
      * @return
      */
-    private String contentSetFetch(List<Object> contentSet) {
+    private String contentSetFetch(List<Object> contentSet)
+        throws Exception {
         String output = "";
         for (Object myContent : contentSet) {
             output += contentFetch(myContent);
@@ -64,7 +65,7 @@ public class EntryRender {
      * @param content
      * @return
      */
-    public String contentFetch(Object content) {
+    public String contentFetch(Object content) throws Exception {
         if (content.getClass() == String.class) {
             return content.toString();
         } else if (content.getClass() == Echo.class) {
@@ -87,7 +88,7 @@ public class EntryRender {
      * @param content
      * @return
      */
-    private String getIfText(If content) {
+    private String getIfText(If content) throws Exception {
         String key = content.getParam();
         for (Else alternate : content.getElse()) {
             if (getParam(key).equals(content.getMatch())) {
@@ -110,7 +111,7 @@ public class EntryRender {
      * @param content An Embed model object in the content
      * @return rendered form of content after fetch
      */
-    private String getEmbedText(Embed content) {
+    private String getEmbedText(Embed content) throws Exception {
         Embed embed = (Embed) content;
         CategorySwitch subcat;
         if (embed.getNamespace() == null) {

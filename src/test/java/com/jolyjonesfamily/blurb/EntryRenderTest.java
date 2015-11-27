@@ -20,7 +20,7 @@ public class EntryRenderTest extends BlurbTest {
     }
 
     @Test
-    public void simpleEntry()
+    public void simpleEntry() throws Exception
     {
         CategorySwitch.setGenerator(new TestSelector(new Integer[]{2}));
         EntryRender entry = blurbCatalog.fetch("main","abstraction",
@@ -29,7 +29,7 @@ public class EntryRenderTest extends BlurbTest {
     }
 
     @Test
-    public void embedEntry()
+    public void embedEntry() throws Exception
     {
         CategorySwitch.setGenerator(new TestSelector(new Integer[] {1,3,0}));
         EntryRender entry = blurbCatalog.fetch(new HashMap<String, String>()).chooseEntry();
@@ -37,7 +37,7 @@ public class EntryRenderTest extends BlurbTest {
     }
 
     @Test
-    public void embedNamespaceEntry()
+    public void embedNamespaceEntry() throws Exception
     {
         CategorySwitch.setGenerator(new TestSelector(new Integer[] {1,0,22}));
         EntryRender entry = blurbCatalog.fetch(new HashMap<String, String>()).chooseEntry();
@@ -45,7 +45,7 @@ public class EntryRenderTest extends BlurbTest {
     }
 
     @Test
-    public void echoEntry()
+    public void echoEntry() throws Exception
     {
         CategorySwitch.setGenerator(new TestSelector(new Integer[]{1,3,2}));
         EntryRender entry = blurbCatalog.fetch(new HashMap<String, String>() {{
@@ -55,7 +55,7 @@ public class EntryRenderTest extends BlurbTest {
     }
 
     @Test
-    public void missingParam()
+    public void missingParam() throws Exception
     {
         CategorySwitch.setGenerator(new TestSelector(new Integer[]{3,2}));
         EntryRender entry = blurbCatalog.fetch(new HashMap<String, String>()).chooseEntry();
@@ -63,7 +63,7 @@ public class EntryRenderTest extends BlurbTest {
     }
 
     @Test
-    public void ifResult()
+    public void ifResult() throws Exception
     {
         CategorySwitch.setGenerator(new TestSelector(new Integer[]{3,21}));
         EntryRender entry = blurbCatalog.fetch(new HashMap<String, String>() {{
@@ -88,7 +88,7 @@ public class EntryRenderTest extends BlurbTest {
     }
 
     @Test
-    public void deriveParam()
+    public void deriveParam() throws Exception
     {
         CategorySwitch.setGenerator(new TestSelector(new Integer[]{0,0,23}));
         EntryRender entry = blurbCatalog.fetch(new HashMap<String, String>()).chooseEntry();

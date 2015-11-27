@@ -5,6 +5,7 @@ import com.jolyjonesfamily.blurb.map.MapBlurbXML;
 import org.apache.commons.cli.*;
 
 import java.io.File;
+import javax.xml.bind.UnmarshalException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,6 +61,11 @@ public class Runner {
         }
         try {
             return getInstance(cmd);
+        } catch (UnmarshalException ue) {
+            if (null != ue.getCause()) {
+                System.err.println(ue.getCause().getMessage());
+            }
+            return null;
         } catch (Exception e) {
             System.err.println(e.getMessage());
             return null;
@@ -121,6 +127,11 @@ public class Runner {
     }
 
     public String getOutput() {
-        return catalog.fetch(getParameters()).getOutput();
+        try {
+            return catalog.fetch(getParameters()).getOutput();
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return null;
+        }
     }
 }

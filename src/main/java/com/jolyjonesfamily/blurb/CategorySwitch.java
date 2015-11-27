@@ -39,15 +39,14 @@ public class CategorySwitch {
     private BlurbCatalog catalog;
 
     /**
-     * All public methods call back to this private one.  Set up with
+     * All public constructors call back to this private method.  Set up with
      * the category and params, the two basic things the switch needs.
      *
      * @param catalog
      * @param myCategory
      * @param params
      */
-    private CategorySwitch(BlurbCatalog catalog, Cat myCategory, Map<String, String> params)
-    {
+    private void setup(BlurbCatalog catalog, Cat myCategory, Map<String, String> params) throws Exception {
         setCatalog(catalog);
         this.category = myCategory;
         assignWeightedValue();
@@ -62,8 +61,8 @@ public class CategorySwitch {
      *
      */
     public CategorySwitch(BlurbCatalog catalog, Map<String, String> params)
-    {
-        this(catalog, catalog.getBlurb().getPattern(), params);
+        throws Exception {
+        setup(catalog, catalog.getBlurb().getPattern(), params);
     }
 
     /**
@@ -74,9 +73,15 @@ public class CategorySwitch {
      * @param categoryName
      */
     public CategorySwitch(BlurbCatalog catalog, String namespaceName, String categoryName,
-      Map<String, String> params)
-    {
-        this(catalog, catalog.getBlurb().getNamespace(namespaceName).getCategory(categoryName), params);
+      Map<String, String> params) throws Exception {
+        Cat catModel = catalog.getBlurb()
+                .getNamespace(namespaceName)
+                .getCategory(categoryName);
+        if (null == catModel) {
+            throw new CategoryException("Category '" + categoryName + "' in namespace '"
+                + namespaceName + "' not found.");
+        }
+        setup(catalog, catModel, params);
     }
 
     /**
@@ -122,7 +127,7 @@ public class CategorySwitch {
      *
      * @param params key/value pairs passed across categories.
      */
-    private void assignParams(Map<String, String> params) {
+    private void assignParams(Map<String, String> params) throws Exception {
         this.params = new HashMap<String, String>();
         for (Param myParam: category.getParam()) {
             this.params.put(myParam.getName(), paramValue(myParam));
@@ -136,7 +141,7 @@ public class CategorySwitch {
      * @param param
      * @return
      */
-    private String paramValue(Param param) {
+    private String paramValue(Param param) throws Exception {
         if (null != param.getDefault()) {
             return param.getDefault();
         }
@@ -203,7 +208,7 @@ public class CategorySwitch {
      *
      * @return Output based on random data and the xml data.
      */
-    public String getOutput()
+    public String getOutput() throws Exception
     {
         return chooseEntry().getOutput();
     }

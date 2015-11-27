@@ -1,18 +1,150 @@
 <blurb>
     <pattern>
-        <entry><embed category="abstraction" filter="Ucfirst"/> is the root of <embed category="abstraction"/>.</entry>
-        <entry weight="20">There is no <echo param="subject"/>, only <embed category="abstraction"/>.</entry>
+        <entry weight="8"><embed category="abstraction" filter="Ucfirst"/> <embed category="verb">
+            </embed> <embed category="abstraction"/>.</entry>
+        <entry weight="5"><embed category="abstraction" filter="Ucfirst"/> <embed category="verb">
+            </embed> <embed category="relation"/>.</entry>
+        <entry weight="5"><embed category="relation" filter="Ucfirst"/> <embed category="verb">
+            </embed> <embed category="abstraction"/>.</entry>
+        <entry>There is no <embed category="abstraction"/>, only <embed category="abstraction"/>.</entry>
     </pattern>
     <namespaces>
         <namespace name="main">
             <categories>
-                <category name="abstraction">
-                    <entry>love</entry>
-                    <entry>anger</entry>
-                    <entry>happiness</entry>
-                    <entry>faith</entry>
-                    <entry>despair</entry>
-                </category>
+        <category name="verb">
+                    <entry weight="4">is</entry>
+                    <entry weight="2">creates</entry>
+                    <entry weight="2">denies</entry>
+                    <entry>only appears to be</entry>
+                    <entry>trancends</entry>
+        </category>
+        <category name="relation">
+	            <entry>the essence of <embed category="abstraction"/></entry>
+                    <entry>the basis of <embed category="abstraction"/></entry>
+                    <entry>the opposite of <embed category="abstraction"/></entry>
+                    <entry>the cause of <embed category="abstraction"/></entry>
+                    <entry>the need for <embed category="abstraction"/></entry>
+                    <entry><embed category="abstraction"/> without <embed category="abstraction">
+			</embed></entry>
+                    <entry>the meaning of <embed category="abstraction"/></entry>
+                    <entry>the truth within <embed category="abstraction"/></entry>
+                    <entry>beyond <embed category="abstraction"/></entry>
+                    <entry>the realization of <embed category="abstraction"/></entry>
+		    <entry>the heart of <embed category="abstraction"/></entry>
+		    <entry>the root of <embed category="abstraction"/></entry>
+		    <entry>the last refuge of <embed category="abstraction"/></entry>
+	</category>
+	<category name="abstraction">
+	    <entry>happiness</entry>
+	    <entry>sadness</entry>
+	    <entry>anger</entry>
+	    <entry>rage</entry>
+	    <entry>despair</entry>
+	    <entry>loneliness</entry>
+	    <entry>joy</entry>
+	    <entry>satisfaction</entry>
+	    <entry>Christianity</entry>
+	    <entry>marriage</entry>
+	    <entry>togetherness</entry>
+	    <entry>friendship</entry>
+	    <entry>hardship</entry>
+	    <entry>Islam</entry>
+	    <entry>Judaism</entry>
+	    <entry>fun</entry>
+	    <entry>pain</entry>
+	    <entry>boredom</entry>
+	    <entry>punishment</entry>
+	    <entry>achievement</entry>
+	    <entry>charity</entry>
+	    <entry>trust</entry>
+	    <entry>distrust</entry>
+	    <entry>reality</entry>
+	    <entry>fantasy</entry>
+	    <entry>disgust</entry>
+	    <entry>hope</entry>
+	    <entry>faith</entry>
+	    <entry>deception</entry>
+	    <entry>realization</entry>
+	    <entry>nature</entry>
+	    <entry>art</entry>
+	    <entry>industry</entry>
+	    <entry>technology</entry>
+	    <entry>crime</entry>
+	    <entry>justice</entry>
+	    <entry>greed</entry>
+	    <entry>food</entry>
+	    <entry>hunger</entry>
+	    <entry>family</entry>
+	    <entry>childhood</entry>
+	    <entry>learning</entry>
+	    <entry>teaching</entry>
+	    <entry>work</entry>
+	    <entry>discovery</entry>
+	    <entry>understanding</entry>
+	    <entry>tyranny</entry>
+	    <entry>democracy</entry>
+	    <entry>dictatorship</entry>
+	    <entry>sex</entry>
+	    <entry>sickness</entry>
+	    <entry>commerce</entry>
+	    <entry>economics</entry>
+	    <entry>destiny</entry>
+	    <entry>acceptance</entry>
+	    <entry>denial</entry>
+	    <entry>observation</entry>
+	    <entry>trauma</entry>
+	    <entry>mystery</entry>
+	    <entry>poverty</entry>
+	    <entry>wealth</entry>
+	    <entry>romance</entry>
+	    <entry>parenthood</entry>
+	    <entry>language</entry>
+	    <entry>reason</entry>
+	    <entry>deception</entry>
+	    <entry>truth</entry>
+	    <entry>reason</entry>
+	    <entry>superstition</entry>
+	    <entry>whimsy</entry>
+	    <entry>fate</entry>
+	    <entry>hedonism</entry>
+	    <entry>responsibility</entry>
+	    <entry>humor</entry>
+	    <entry>violence</entry>
+	    <entry>peace</entry>
+	    <entry>need</entry>
+	    <entry>independence</entry>
+	    <entry>sloth</entry>
+	    <entry>pride</entry>
+	    <entry>superstition</entry>
+	    <entry>obsession</entry>
+	    <entry>deception</entry>
+	    <entry>diplomacy</entry>
+	    <entry>politics</entry>
+	    <entry>religion</entry>
+	    <entry>authority</entry>
+	    <entry>anarchy</entry>
+	    <entry>age</entry>
+	    <entry>youth</entry>
+	    <entry>work</entry>
+	    <entry>government</entry>
+	    <entry>inaction</entry>
+	    <entry>acceptance</entry>
+	    <entry>insurance</entry>
+	    <entry>death</entry>
+	    <entry>life</entry>
+	    <entry>evil</entry>
+	    <entry>good</entry>
+	    <entry>torture</entry>
+	    <entry>health</entry>
+	    <entry>safety</entry>
+	    <entry>danger</entry>
+	    <entry>biology</entry>
+	    <entry>genetics</entry>
+	    <entry>comfort</entry>
+	    <entry>insanity</entry>
+	    <entry>risk</entry>
+	    <entry>recreation</entry>
+	</category>
             </categories>
         </namespace>
     </namespaces>

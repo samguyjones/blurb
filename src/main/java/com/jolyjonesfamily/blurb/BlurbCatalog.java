@@ -56,7 +56,7 @@ public class BlurbCatalog {
      * @return Home category
      */
     public CategorySwitch fetch(Map<String, String> params)
-    {
+        throws Exception {
         if (homeCategory == null) {
             homeCategory = new CategorySwitch(this, params);
         } else {
@@ -74,7 +74,7 @@ public class BlurbCatalog {
      * @return
      */
     public CategorySwitch fetch(String namespace, String categoryName,
-                                Map<String, String> params) {
+                                Map<String, String> params) throws Exception {
         if (!categories.containsValue(namespace)) {
             categories.put(namespace, new HashMap<String, CategorySwitch>());
         }
@@ -94,7 +94,8 @@ public class BlurbCatalog {
      * @param params
      * @return
      */
-    public CategorySwitch fetch(String categoryName, Map<String, String> params) {
+    public CategorySwitch fetch(String categoryName, Map<String, String> params)
+        throws Exception {
         return fetch(DEFAULT_NAMESPACE, categoryName, params);
     }
 
@@ -106,7 +107,13 @@ public class BlurbCatalog {
      */
     public String getOutput(Map<String, String> params)
     {
-        return fetch(params).getOutput();
+        try {
+            return fetch(params).getOutput();
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            System.exit(1);
+            return null;
+        }
     }
 
     /**

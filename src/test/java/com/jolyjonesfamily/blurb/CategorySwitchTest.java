@@ -22,7 +22,7 @@ public class CategorySwitchTest extends BlurbTest {
     }
 
     @Test
-    public void getPattern() {
+    public void getPattern() throws Exception {
         CategorySwitch pattern = new CategorySwitch(new BlurbCatalog(blurb), new HashMap() {{
             put("foo", "bar");
         }});
@@ -35,7 +35,7 @@ public class CategorySwitchTest extends BlurbTest {
     }
 
     @Test
-    public void getMainCategory() {
+    public void getMainCategory() throws Exception {
         CategorySwitch abstraction = new CategorySwitch(new BlurbCatalog(blurb), "main", "abstraction",
             new HashMap() {{
             put("pig", "foot");
