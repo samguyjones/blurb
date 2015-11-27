@@ -3,15 +3,15 @@ Blurb makes a Java library that spits out random output whose possible results a
 spelled out in a data file.  For instance, here is the "pithy.xml" file that makes
 pithy-sounding fortune-cookie statements:
 
-Charity creates superstition.
-Punishment only appears to be distrust.
+ * Charity creates superstition.
+ * Punishment only appears to be distrust.
 There is no tyranny, only discovery.
 
 Here are examples from a data file made from Cards Against Humanity cards:
 
-White people like The Little Engine That Could.
-But before I kill you, Mr. Bond, I must show you crystal meth.
-In M. Night Shyamalan's new movie, Bruce Willis discovers that the Force had really
+ * White people like The Little Engine That Could.
+ * But before I kill you, Mr. Bond, I must show you crystal meth.
+ * In M. Night Shyamalan's new movie, Bruce Willis discovers that the Force had really
 been whipping it out all along.
 
 ## Command Line Execution
