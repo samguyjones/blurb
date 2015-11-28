@@ -15,9 +15,13 @@ import java.util.Map;
 public class Runner {
     private BlurbCatalog catalog;
     private Map parameters;
+    private int count;
     private static Runner instance;
     private static final char PARAM = 'p';
     private static final String PARAM_NAME = "parameters";
+    private static final char COUNT = 'c';
+    private static final String COUNT_NAME = "count";
+    private static final int DEFAULT_COUNT = 1;
 
 
     public static void main(String argv[]) {
@@ -43,6 +47,11 @@ public class Runner {
                 .withValueSeparator('&')
                 .withDescription("A set of key value pairs of options represented by key=value")
                 .create(PARAM));
+        options.addOption(OptionBuilder.withArgName(COUNT_NAME)
+                .hasArgs()
+                .withValueSeparator('&')
+                .withDescription("A set of key value pairs of options represented by key=value")
+                .create(COUNT));
         return options;
     }
 
@@ -84,12 +93,15 @@ public class Runner {
             }
             instance.setParameters(parameters);
         }
+        instance.count = (cmd.hasOption(COUNT)) ? Integer.valueOf(cmd.getOptionValue(COUNT))
+                : DEFAULT_COUNT;
         return instance;
     }
 
     private static Runner getInstance() throws Exception {
         if (instance == null) {
             instance = new Runner();
+            instance.count = DEFAULT_COUNT;
         }
         instance.setParameters(new HashMap());
         return instance;
@@ -112,6 +124,11 @@ public class Runner {
         this.parameters = parameters;
     }
 
+    public Runner setCount(int count) {
+        this.count = count;
+        return this;
+    }
+
     public Runner() throws Exception
     {
 //        setCatalog(new BlurbCatalog(new MapBlurbXML(new File(filename))));
@@ -128,7 +145,12 @@ public class Runner {
 
     public String getOutput() {
         try {
-            return catalog.fetch(getParameters()).getOutput();
+            String output = "";
+            for (int pass = 0; pass < count ; pass++) {
+                output += catalog.fetch(getParameters()).getOutput();
+                output += "\n";
+            }
+            return output;
         } catch (Exception e) {
             System.err.println(e.getMessage());
             return null;

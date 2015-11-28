@@ -20,12 +20,25 @@ public class RunnerTest extends BlurbTest {
             Assert.fail();
             return;
         }
-        Selector testSelector = new TestSelector(new Stack<Integer>(){{
-            push(4);
-            push(3);
-            push(0);
-        }});
+        Selector testSelector = new TestSelector(new Integer[] {4,3,0});
         CategorySwitch.setGenerator(testSelector);
-        Assert.assertEquals("Faith is the root of despair.", runner.getOutput());
+        Assert.assertEquals("Faith is the root of despair.\n", runner.getOutput());
     }
+
+    @Test public void two()
+    {
+        Runner runner;
+        try {
+            runner = Runner.getInstance(getMap()).setCount(2);
+
+        } catch (Exception e) {
+            Assert.fail();
+            return;
+        }
+        Selector testSelector = new TestSelector(new Integer[] {4,3,0,3,2,0});
+        CategorySwitch.setGenerator(testSelector);
+        Assert.assertEquals("Happiness is the root of faith." +
+        "\n" + "Faith is the root of despair.\n", runner.getOutput());
+    }
+
 }
