@@ -1,7 +1,18 @@
 # blurb
-This is a Java library to create random output.  It takes a set of
-patterns from an XML data file, and it can produce random text using those
-specifications.  It's inspired by a very old C program called "spew".
+Blurb makes a Java library that spits out random output whose possible results are
+spelled out in a data file.  For instance, here is the "pithy.xml" file that makes
+pithy-sounding fortune-cookie statements:
+
+ * Charity creates superstition.
+ * Punishment only appears to be distrust.
+There is no tyranny, only discovery.
+
+Here are examples from a data file made from Cards Against Humanity cards:
+
+ * White people like The Little Engine That Could.
+ * But before I kill you, Mr. Bond, I must show you crystal meth.
+ * In M. Night Shyamalan's new movie, Bruce Willis discovers that the Force had really
+been whipping it out all along.
 
 ## Command Line Execution
 If you have Maven (you need version 3), you
