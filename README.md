@@ -5,7 +5,7 @@ pithy-sounding fortune-cookie statements:
 
  * Charity creates superstition.
  * Punishment only appears to be distrust.
-There is no tyranny, only discovery.
+ * There is no tyranny, only discovery.
 
 Here are examples from a data file made from Cards Against Humanity cards:
 
